@@ -1,0 +1,6 @@
+/* @license GPL-2.0-or-later https://www.drupal.org/licensing/faq */
+.js .js-hide{display:none;}.js-show{display:none;}.js .js-show{display:block;}
+.nowrap{white-space:nowrap;}
+.position-container{position:relative;}
+.reset-appearance{margin:0;padding:0;border:0 none;background:transparent;line-height:inherit;-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+.resize-none{resize:none;}.resize-vertical{min-height:2em;resize:vertical;}.resize-horizontal{max-width:100%;resize:horizontal;}.resize-both{max-width:100%;min-height:2em;resize:both;}

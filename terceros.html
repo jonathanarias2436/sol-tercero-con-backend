@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verificación de Documentos para Terceros - Universidad El Bosque</title>
+  <!-- Tailwind CSS & Font Awesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Tipografía estándar Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    .brand-orange {
+      color: #FD7519;
+    }
+
+    .bg-brand-orange {
+      background-color: #FD7519;
+    }
+
+    .bg-brand-orange:hover {
+      background-color: #e4660f;
+    }
+
+    /* Botones principales con verde brillante institucional */
+    .btn-green-inst {
+      background-color: #1EC038;
+      color: #ffffff;
+    }
+
+    .btn-green-inst:hover {
+      background-color: #19a22f;
+    }
+
+    /* Botón "Revalidar documentos" (cascada): aparece cuando hay un documento rechazado */
+    .btn-orange-inst {
+      background-color: #f97316;
+      color: #ffffff;
+    }
+
+    .btn-orange-inst:hover {
+      background-color: #ea580c;
+    }
+
+    .nav-link-hover:hover {
+      color: #012820;
+    }
+
+    /* Select nativo con flecha propia, más separada del borde que la del navegador por defecto */
+    .select-flecha {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.8rem center;
+      background-size: 1rem;
+      padding-right: 2.55rem;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-[#232429] min-h-screen pb-16 relative">
+
+  <!-- ENCABEZADO INSTITUCIONAL -->
+  <header class="border-b border-gray-200 bg-white sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="./assets/logo.svg" alt="Universidad El Bosque"
+          class="coh-image coh-ce-cpt_unbo_site_header-ab4d05f5 coh-image-responsive-xl w-[179.97px] h-[62.52px] object-contain"
+          style="width: 179.97px; height: 62.52px;"
+          onerror="this.src='https://www.unbosque.edu.co/sites/default/files/logo-universidad-el-bosque.png'">
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html"
+          class="text-xs text-gray-600 nav-link-hover flex items-center gap-1.5 font-medium transition-colors">
+          <i class="fa-solid fa-arrow-left"></i> Volver al inicio
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-4xl mx-auto px-4 md:px-6 mt-8 space-y-6">
+
+    <!-- Título principal -->
+    <div id="bloque-titulo">
+      <h1 class="text-2xl font-bold text-[#232429] flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved brand-orange"></i>
+        Solicitud creación tercero
+      </h1>
+      <p class="text-gray-500 text-sm mt-1" id="subtitulo-etapa">Por favor completa la siguiente información para
+        continuar.</p>
+      <hr class="border-gray-200 mt-4">
+    </div>
+
+    <!-- ETAPA 1: Información del solicitante -->
+    <div id="seccion-info-solicitante"
+      class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 space-y-6 shadow-sm">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div class="flex items-center gap-3">
+          <div id="badge-paso-1"
+            class="w-7 h-7 rounded-full bg-[#012820] text-white flex items-center justify-center text-xs font-bold">1
+          </div>
+          <h2 class="text-base font-bold text-[#232429]">Información del solicitante</h2>
+        </div>
+        <button id="btn-editar"
+          class="hidden text-xs text-[#FD7519] font-medium hover:underline flex items-center gap-1 cursor-pointer">
+          <i class="fa-solid fa-pen-to-square"></i> Editar
+        </button>
+      </div>
+
+      <form id="form-titular" class="space-y-4 text-sm" onsubmit="return false;">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Calidad <span
+                class="text-red-500">*</span></label>
+            <select id="calidad"
+              class="select-flecha w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+              <option value="" disabled selected>Seleccione opción</option>
+              <option value="1">Cliente</option>
+              <option value="2">Proveedores</option>
+            </select>
+            <p id="err-calidad" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Nacionalidad <span
+                class="text-red-500">*</span></label>
+            <select id="nacionalidad"
+              class="select-flecha w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+              <option value="" disabled selected>Seleccione opción</option>
+              <option value="2">Nacional</option>
+              <option value="1">Extranjero</option>
+            </select>
+            <p id="err-nacionalidad" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Persona <span
+                class="text-red-500">*</span></label>
+            <select id="tipoPersona"
+              class="select-flecha w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+              <option value="" disabled selected>Seleccione opción</option>
+              <option value="1">Natural</option>
+              <option value="2">Jurídica</option>
+            </select>
+            <p id="err-tipoPersona" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Correo del solicitante <span
+                class="text-red-500">*</span></label>
+            <input type="email" id="correoInstitucional" placeholder="correo@ejemplo.com"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-correoInstitucional" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Nombre Completo / Razón Social <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="nombre" placeholder="Ej. Ana Gómez / Empresa SAS"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-nombre" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Cédula <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="cedula" placeholder="Mínimo 6 dígitos"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-cedula" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Expedición cédula <span
+                class="text-red-500">*</span></label>
+            <input type="date" id="fechaExpedicionCedula"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-fechaExpedicionCedula" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Lugar de Nacimiento <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="lugarNacimiento" placeholder="Ej. Bogotá"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-lugarNacimiento" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">País de Nacimiento <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="paisNacimiento" placeholder="Ej. Colombia"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-paisNacimiento" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">NIT</label>
+            <input type="text" id="nit" placeholder="900123456-1"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-nit" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Celular <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="celular" placeholder="Mínimo 8 dígitos"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-celular" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1.5 text-xs">Dirección de Residencia <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="direccion" placeholder="Calle 100 # 15"
+              class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2.5 text-xs text-[#232429] focus:outline-none focus:border-[#FD7519]">
+            <p id="err-direccion" class="text-red-500 text-[11px] mt-1 hidden"></p>
+          </div>
+        </div>
+
+        <!-- Términos y Condiciones -->
+        <div class="pt-4 border-t border-gray-100 space-y-2">
+          <button type="button" id="btn-abrir-tc"
+            class="text-[#1EC038] hover:underline text-sm font-medium cursor-pointer block">
+            Leer términos y condiciones
+          </button>
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="check-autorizacion"
+              class="w-4 h-4 text-[#1EC038] rounded border-gray-300 focus:ring-[#1EC038] cursor-pointer">
+            <label for="check-autorizacion" class="text-xs text-gray-700 cursor-pointer">
+              Autorizo a Universidad El Bosque para el envío de información <span class="text-red-500">*</span>
+            </label>
+          </div>
+          <p id="err-autorizacion" class="text-red-500 text-[11px] hidden"></p>
+        </div>
+
+        <div class="pt-3 flex justify-center">
+          <button id="btn-ejecutar"
+            class="btn-green-inst font-semibold py-3.5 px-10 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm text-sm cursor-pointer">
+            <i class="fa-solid fa-check"></i> Validar información
+          </button>
+        </div>
+      </form>
+
+      <!-- Resumen -->
+      <div id="resumen-titular"
+        class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs bg-gray-50 border border-gray-200 rounded-xl p-4">
+        <div>
+          <span class="text-gray-400 block mb-0.5">Perfil</span>
+          <span id="res-perfil" class="font-semibold text-gray-800">-</span>
+        </div>
+        <div>
+          <span class="text-gray-400 block mb-0.5">Nombre / Razón Social</span>
+          <span id="res-nombre" class="font-semibold text-gray-800">-</span>
+        </div>
+        <div>
+          <span class="text-gray-400 block mb-0.5">Correo</span>
+          <span id="res-correo" class="font-semibold text-gray-800">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETAPA 2: Documentos requeridos -->
+    <div id="seccion-documentos"
+      class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 space-y-4 hidden shadow-sm">
+      <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+        <div class="flex items-center gap-3">
+          <div id="badge-paso-2"
+            class="w-7 h-7 rounded-full bg-[#012820] text-white flex items-center justify-center text-xs font-bold">2
+          </div>
+          <h2 class="text-base font-bold text-[#232429]">Documentos requeridos</h2>
+        </div>
+        <span class="text-xs text-gray-500 hidden sm:inline">Adjunta los soportes en PDF:</span>
+      </div>
+
+      <div id="contenedor-documentos" class="space-y-3"></div>
+
+      <!-- Enlaces de descarga directa: .xlsx/.docx no se pueden previsualizar en un iframe,
+           así que se descargan de una vez en vez de abrir un visor que no funciona para esos formatos. -->
+      <div class="pt-4 border-t border-gray-100 flex flex-wrap gap-3">
+        <a href="assets/Formato único de creación de proveedores, compras bienes y servicios V.07.xlsx" download
+          class="inline-flex items-center gap-1.5 text-xs bg-white border border-[#FD7519] text-[#FD7519] px-3.5 py-2.5 rounded-xl font-medium hover:bg-orange-50 transition-colors shadow-xs cursor-pointer">
+          <i class="fa-solid fa-file-excel"></i> Descargar Formato Proveedores (.xlsx)
+        </a>
+        <a href="assets/Formato solicitud emisión factura creación cliente.docx" download
+          class="inline-flex items-center gap-1.5 text-xs bg-white border border-[#FD7519] text-[#FD7519] px-3.5 py-2.5 rounded-xl font-medium hover:bg-orange-50 transition-colors shadow-xs cursor-pointer">
+          <i class="fa-solid fa-file-word"></i> Descargar Solicitud de Factura (.docx)
+        </a>
+      </div>
+
+      <!-- Botón único de validación (patrón "cascada"): valida en orden y se detiene en el
+           primer documento rechazado. Cambia de texto/color según el estado: Validar (verde) →
+           Procesando → Revalidar documentos (naranja, solo si hubo cambios) → Continuar (verde). -->
+      <div class="pt-4 border-t border-gray-100 flex items-center justify-center">
+        <button id="btn-continuar" disabled data-accion="validar"
+          class="btn-green-inst font-semibold py-3.5 px-10 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fa-solid fa-check"></i> Validar documentos
+        </button>
+      </div>
+    </div>
+
+    <!-- Acciones del paso 2, fuera del contenedor de "Documentos requeridos": Volver a la
+         izquierda (siempre que el paso esté activo) y Finalizar registro a la derecha (solo
+         cuando ya se validaron todos los documentos). -->
+    <div id="seccion-volver" class="hidden flex items-center justify-between gap-3">
+      <button id="btn-volver"
+        class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-xs cursor-pointer">
+        Volver
+      </button>
+      <button id="btn-finalizar-registro"
+        class="hidden px-6 py-2.5 btn-green-inst text-xs font-semibold rounded-xl transition-colors shadow-sm cursor-pointer flex items-center gap-1.5">
+        Finalizar registro <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+    </div>
+
+    <!-- ETAPA 4: Finalizado y Confirmación -->
+    <div id="seccion-etapa4"
+      class="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 space-y-6 hidden shadow-sm text-center">
+      <div
+        class="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto text-2xl shadow-md">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      <div class="space-y-2 max-w-lg mx-auto">
+        <h2 class="text-xl font-bold text-[#232429]">¡Trámite finalizado con éxito!</h2>
+        <p class="text-sm text-gray-600 leading-relaxed">
+          <strong>Mira tu confirmación en tu correo electrónico.</strong>
+        </p>
+      </div>
+      <div class="pt-4 flex justify-center">
+        <button id="btn-finalizar-reiniciar"
+          class="px-8 py-3 btn-green-inst text-xs font-semibold rounded-xl transition-colors shadow-sm cursor-pointer flex items-center gap-2">
+          <i class="fa-solid fa-rotate-right"></i> Registrar otro tercero
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL / DASHBOARD DE TÉRMINOS Y CONDICIONES -->
+  <div id="modal-tc"
+    class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-xs">
+    <div
+      class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-gray-200">
+
+      <div class="p-6 border-b border-gray-200 flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-gray-50">
+        <img src="./assets/logo.svg" alt="Universidad El Bosque" class="h-12 w-auto object-contain"
+          onerror="this.src='https://www.unbosque.edu.co/sites/default/files/logo-universidad-el-bosque.png'">
+        <div class="border-l-0 sm:border-l-2 border-gray-300 sm:pl-4">
+          <h2 class="text-base font-bold text-[#232429] leading-snug">
+            Política de tratamiento y privacidad de información de la Universidad El Bosque
+          </h2>
+        </div>
+      </div>
+
+      <div
+        class="p-6 md:p-8 overflow-y-auto space-y-4 text-xs text-gray-700 leading-relaxed max-h-[60vh] bg-white text-justify">
+        <p>Bienvenido al documento de política de privacidad de la Universidad El Bosque (en adelante LA UNIVERSIDAD).
+          LA UNIVERSIDAD es una institución de educación superior constituida bajo la figura de Fundación. Los
+          diferentes medios digitales y físicos que la UNIVERSIDAD pone a su disposición, tienen como objetivo brindar a
+          la comunidad académica y al público en general la información institucional y académica en relación con los
+          servicios y actividades que desarrolla. La Universidad no tiene interés comercial o de lucro respecto de los
+          enlaces y contenidos que se publican. Salvo que expresamente se indique lo contrario, el acceso a los sitios y
+          portales web de la UNIVERSIDAD es gratuito y libre.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm pt-2" style="text-align: left !important;">1. Aceptación y
+          actualización de la política de privacidad</h3>
+        <p>Al aceptar los términos de esta POLÍTICA DE PRIVACIDAD, Usted expresamente autoriza la recolección,
+          almacenamiento, utilización, divulgación, transferencia, procesamiento y supresión de datos o información
+          personal tal como se estipula en esta política de privacidad. Se entiende por “información o datos personales”
+          cualquier información vinculada o que pueda asociarse a una o varias personas naturales determinadas o
+          determinables. En caso que no esté de acuerdo con nuestra política de privacidad absténgase de entregar
+          cualquier tipo de información. LA UNIVERSIDAD se reserva el derecho de actualizar y modificar en cualquier
+          momento los términos de este documento.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm pt-2" style="text-align: left !important;">2. Recolección, uso y
+          acceso a la información</h3>
+        <p><strong>2.1.</strong> La UNIVERSIDAD de conformidad con lo dispuesto en la ley 1581 de 2012 sobre la
+          Protección de Datos Personales, le informamos que sus datos personales serán incluidos en una base de datos
+          responsabilidad de UNIVERSIDAD EL BOSQUE y serán tratados con la finalidad de cumplir con los siguientes
+          propósitos y fines institucionales:</p>
+
+        <ol class="list-[lower-alpha] pl-5 space-y-1.5" style="text-align: left !important;">
+          <li>Cumplir con la normatividad vigente en Colombia para las Instituciones de educación superior.</li>
+          <li>Mantener una comunicación eficaz relacionada con nuestros servicios, y demás actividades relativas a las
+            funciones propias de la Universidad.</li>
+          <li>Realizar el envío de información relacionada con programas, actividades, eventos, noticias, publicidad y
+            servicios.</li>
+          <li>Informar sobre nuevos productos o servicios y/o sobre cambios en los mismos.</li>
+          <li>Dar cumplimiento a obligaciones contraídas con estudiantes, egresados, profesores, contratistas,
+            proveedores y empleados.</li>
+          <li>Desarrollar procesos de selección y vinculación laboral.</li>
+          <li>Llevar un registro de seguridad de las personas que visitan e ingresan a las instalaciones de la
+            Universidad.</li>
+          <li>Aplicar encuestas para realizar perfilamiento de usuarios, investigaciones estadísticas o evaluar la
+            calidad de los servicios.</li>
+        </ol>
+
+        <p class="pt-2"><strong>2.2.</strong> LA UNIVERSIDAD podrá recopilar y procesar otro tipo de información
+          personal de carácter especial (“Información Personal Sensible”) proveída voluntariamente por el titular para
+          fines legítimos de la institución y dentro del marco legal aplicable.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm pt-2" style="text-align: left !important;">3. Derechos del Titular de
+          la información</h3>
+        <p>Son derechos del Titular: Conocer, actualizar y rectificar sus datos personales; ser informado del uso que se
+          les ha dado; revocar la autorización o solicitar la supresión de los mismos; y acceder en forma gratuita a sus
+          datos personales que hayan sido objeto de tratamiento mediante solicitud enviada a los canales institucionales
+          establecidos.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm pt-2" style="text-align: left !important;">4. Deberes y facultades de
+          LA UNIVERSIDAD</h3>
+        <p>LA UNIVERSIDAD conservará la información bajo las condiciones de seguridad necesarias para impedir su
+          adulteración, pérdida, consulta, uso o acceso no autorizado, y almacenará los datos personales hasta tanto
+          resulte conveniente o necesario para sus fines institucionales.</p>
+
+        <!-- Bloque inferior con correos interactivos -->
+        <div
+          class="bg-gray-50 p-4 rounded-xl border border-gray-200 mt-6 space-y-1.5 text-[11px] text-gray-600 text-left relative"
+          style="text-align: left !important;">
+          <p style="text-align: left !important;"><strong>Fecha de actualización:</strong> Octubre de 2017.</p>
+          <p style="text-align: left !important;">
+            <strong>Inquietudes y sugerencias:</strong>
+            <button type="button" onclick="abrirSelectorCorreo('atencionalusuario@unbosque.edu.co', event)"
+              class="text-[#FD7519] font-medium hover:underline cursor-pointer focus:outline-none">
+              atencionalusuario@unbosque.edu.co
+            </button>
+          </p>
+          <p style="text-align: left !important;">
+            <strong>Informar irregularidades (Habeas Data):</strong>
+            <button type="button" onclick="abrirSelectorCorreo('habeasdata@unbosque.edu.co', event)"
+              class="text-[#FD7519] font-medium hover:underline cursor-pointer focus:outline-none">
+              habeasdata@unbosque.edu.co
+            </button>
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-gray-200 bg-gray-50 flex items-center justify-end gap-3">
+        <button type="button" id="btn-rechazar-tc"
+          class="px-5 py-2.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-xs cursor-pointer">
+          Rechazar
+        </button>
+        <button type="button" id="btn-aceptar-tc"
+          class="px-6 py-2.5 btn-green-inst text-xs font-semibold rounded-xl transition-colors shadow-sm cursor-pointer">
+          Aceptar Términos y Condiciones
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL / SELECTOR DE CORREO (GMAIL, OUTLOOK, PREDETERMINADO) -->
+  <div id="modal-selector-correo" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-4 border border-gray-200">
+      <div class="text-center space-y-1">
+        <h3 class="text-sm font-bold text-gray-800">Enviar correo electrónico</h3>
+        <p id="txt-correo-destino" class="text-xs text-gray-500 font-mono"></p>
+      </div>
+      <div class="space-y-2 pt-2">
+        <a id="link-gmail" href="#" target="_blank"
+          class="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2.5 px-4 rounded-xl text-xs font-semibold transition-colors shadow-xs">
+          <i class="fa-brands fa-google"></i> Abrir con Gmail
+        </a>
+        <a id="link-outlook" href="#" target="_blank"
+          class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-4 rounded-xl text-xs font-semibold transition-colors shadow-xs">
+          <i class="fa-brands fa-microsoft"></i> Abrir con Outlook.com
+        </a>
+        <a id="link-default" href="#"
+          class="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl text-xs font-semibold transition-colors border border-gray-300">
+          <i class="fa-solid fa-envelope"></i> Aplicativo predeterminado
+        </a>
+      </div>
+      <div class="pt-2 text-center">
+        <button type="button" onclick="cerrarSelectorCorreo()"
+          class="text-xs text-gray-500 hover:text-gray-700 font-medium cursor-pointer">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VENTANA AUXILIAR (MODAL) PARA VISUALIZAR EL PDF EN LA MISMA PÁGINA -->
+  <div id="modal-visor-pdf"
+    class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-xs">
+    <div
+      class="bg-white rounded-2xl max-w-2xl w-full h-[80vh] flex flex-col shadow-2xl overflow-hidden border border-gray-200">
+      <!-- Encabezado de la ventana -->
+      <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-file-pdf text-[#1EC038] text-base"></i>
+          <h3 id="titulo-visor-pdf" class="text-xs font-bold text-gray-800 truncate max-w-md">Visualización de documento
+          </h3>
+        </div>
+        <button type="button" onclick="cerrarVisorPDF()"
+          class="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 flex items-center justify-center transition-colors cursor-pointer text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <!-- Contenido del visor (iframe embebido) -->
+      <div class="flex-1 bg-gray-100 p-2">
+        <iframe id="iframe-pdf" src="" class="w-full h-full rounded-xl border border-gray-300 bg-white"
+          frameborder="0"></iframe>
+      </div>
+      <!-- Pie de la ventana con botón fácil para cerrar -->
+      <div class="p-3 border-t border-gray-200 bg-gray-50 flex items-center justify-end">
+        <button type="button" onclick="cerrarVisorPDF()"
+          class="px-5 py-2 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors shadow-xs cursor-pointer">
+          Cerrar ventana
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL DE CONFIRMACIÓN PARA FINALIZAR EL REGISTRO -->
+  <div id="modal-confirmar-finalizar"
+    class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden backdrop-blur-xs">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-gray-200 text-center space-y-4">
+      <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-circle-question"></i>
+      </div>
+      <div class="space-y-1.5">
+        <h3 class="text-base font-bold text-[#232429]">¿Finalizar el registro?</h3>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Verifica que la información y los documentos cargados sean correctos. Una vez finalizado, no podrás editarlos.
+        </p>
+      </div>
+      <div class="flex items-center gap-3 pt-1">
+        <button type="button" id="btn-cancelar-finalizar"
+          class="flex-1 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors cursor-pointer">
+          Cancelar
+        </button>
+        <button type="button" id="btn-confirmar-finalizar"
+          class="flex-1 px-4 py-2.5 btn-green-inst text-xs font-semibold rounded-xl transition-colors shadow-sm cursor-pointer">
+          Sí, finalizar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function abrirSelectorCorreo(email, event) {
+      event.preventDefault();
+      document.getElementById('txt-correo-destino').innerText = email;
+
+      document.getElementById('link-gmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
+      document.getElementById('link-outlook').href = `https://outlook.live.com/owa/?path=/mail/action/compose&to=${email}`;
+      document.getElementById('link-default').href = `mailto:${email}`;
+
+      document.getElementById('modal-selector-correo').classList.remove('hidden');
+    }
+
+    function cerrarSelectorCorreo() {
+      document.getElementById('modal-selector-correo').classList.add('hidden');
+    }
+
+
+    const catalogoDocs = {
+      'prov_creacion': { titulo: 'Formato único de creación de proveedores', desc: 'Diligenciado y firmado en formato PDF.', obligatorio: true },
+      'prov_rut': { titulo: 'Registro Único Tributario - RUT', desc: 'Documento oficial actualizado en formato PDF.', obligatorio: true },
+      'prov_cedula': { titulo: 'Copia del documento de identidad', desc: 'Cédula legible por ambos lados en formato PDF.', obligatorio: true },
+      'prov_certBancaria': { titulo: 'Certificado de cuenta bancaria', desc: 'Expedido por la entidad bancaria, no mayor a 30 días.', obligatorio: true },
+      'prov_listas': { titulo: 'Soporte de consulta en listas restrictivas', desc: 'Constancia de verificación en formato PDF.', obligatorio: true },
+      'prov_camara': { titulo: 'Certificado de Cámara de Comercio', desc: 'Vigencia no mayor a 30 días en formato PDF.', obligatorio: true },
+      'prov_repLegal': { titulo: 'Documento de identificación de Representantes Legales', desc: 'Principal y suplente (si aplica) en formato PDF.', obligatorio: true },
+      'prov_regFiscal': { titulo: 'Soporte del registro fiscal / Documento extranjero', desc: 'Vigencia no mayor a 30 días en formato PDF.', obligatorio: true },
+      'prov_declaracion': { titulo: 'Declaración juramentada (Presencia Económica Significativa - PES)', desc: 'Debidamente diligenciada y firmada en PDF.', obligatorio: true },
+
+      'cli_solicitud': { titulo: 'Formato solicitud de emisión de factura', desc: 'Diligenciado correctamente en formato PDF.', obligatorio: true },
+      'cli_rut': { titulo: 'Registro Único Tributario - RUT', desc: 'Documento oficial actualizado en formato PDF.', obligatorio: true },
+      'cli_cedula': { titulo: 'Copia del documento de identidad', desc: 'Cédula legible en formato PDF.', obligatorio: true },
+      'cli_tratamiento': { titulo: 'Autorización de tratamiento de datos personales', desc: 'Firmada por el titular en formato PDF.', obligatorio: true },
+      'cli_carta': { titulo: 'Carta de compromiso de la empresa', desc: 'Documento oficial en formato PDF.', obligatorio: true },
+      'cli_regFiscal': { titulo: 'Soporte del registro fiscal / Documento extranjero', desc: 'Vigencia no mayor a 30 días en formato PDF.', obligatorio: true }
+    };
+
+    // Backend de validación de documentos (ms-tercero), desplegado en Azure Container Apps.
+    const API_BASE_URL = 'https://ms-tercero-api.bluesea-2df0ebb2.belgiumcentral.azurecontainerapps.io';
+
+    // Interruptor de demo: en true llama al backend real para validar cédula/RUT; en false no
+    // hace ninguna llamada y aprueba todos los documentos por defecto (útil sin el backend arriba).
+    const CALL_BACKEND = true;
+
+    // Documentos para los que ya existe un modelo real en Azure Document Intelligence.
+    // El resto se sigue mostrando como "simulado" hasta que se entrenen sus modelos.
+    const tipoDocumentoConModelo = {
+      'prov_cedula': 'CEDULA',
+      'cli_cedula': 'CEDULA',
+      'prov_rut': 'RUT',
+      'cli_rut': 'RUT'
+    };
+
+    let documentosActuales = [];
+    let estadoDocumentos = {};
+    // Resultado de la última validación por documento ({ estado, detalle, valid }).
+    let resultadosPorDocumento = {};
+    // docKey que se está validando en este instante (para pintar el spinner en su tarjeta).
+    let docKeyEnProceso = null;
+    let procesandoValidacion = false;
+    // Para que "Revalidar documentos" no se habilite si no se cambió nada desde el último intento.
+    let hayDocumentosModificados = false;
+
+    const $ = (id) => document.getElementById(id);
+
+    $('btn-abrir-tc')?.addEventListener('click', () => $('modal-tc').classList.remove('hidden'));
+    $('btn-aceptar-tc')?.addEventListener('click', () => {
+      $('check-autorizacion').checked = true;
+      $('err-autorizacion').classList.add('hidden');
+      $('modal-tc').classList.add('hidden');
+    });
+    $('btn-rechazar-tc')?.addEventListener('click', () => {
+      $('check-autorizacion').checked = false;
+      $('modal-tc').classList.add('hidden');
+    });
+
+    function limpiarErroresCampos() {
+      const campos = ['calidad', 'nacionalidad', 'tipoPersona', 'correoInstitucional', 'nombre', 'cedula', 'fechaExpedicionCedula', 'lugarNacimiento', 'paisNacimiento', 'nit', 'celular', 'direccion'];
+      campos.forEach(id => {
+        const input = $(id);
+        const err = $('err-' + id);
+        if (input) input.classList.remove('border-red-500');
+        if (err) { err.innerText = ''; err.classList.add('hidden'); }
+      });
+      $('err-autorizacion').classList.add('hidden');
+    }
+
+    function validarFormularioTitular() {
+      limpiarErroresCampos();
+      let hayErrores = false;
+
+      const calidad = $('calidad').value;
+      const nacionalidad = $('nacionalidad').value;
+      const tipoPersona = $('tipoPersona').value;
+      const correo = $('correoInstitucional').value.trim();
+      const nombre = $('nombre').value.trim();
+      const cedula = $('cedula').value.trim();
+      const fechaExp = $('fechaExpedicionCedula').value.trim();
+      const lugarNac = $('lugarNacimiento').value.trim();
+      const paisNac = $('paisNacimiento').value.trim();
+      const nit = $('nit').value.trim();
+      const celular = $('celular').value.trim();
+      const direccion = $('direccion').value.trim();
+      const autorizacion = $('check-autorizacion').checked;
+
+      if (!calidad) { mostrarErrorCampo('calidad', 'Selecciona una opción.'); hayErrores = true; }
+      if (!nacionalidad) { mostrarErrorCampo('nacionalidad', 'Selecciona una opción.'); hayErrores = true; }
+      if (!tipoPersona) { mostrarErrorCampo('tipoPersona', 'Selecciona una opción.'); hayErrores = true; }
+      if (!correo || !correo.includes('@')) { mostrarErrorCampo('correoInstitucional', 'Ingresa un correo electrónico válido.'); hayErrores = true; }
+      if (!nombre) { mostrarErrorCampo('nombre', 'Este campo es obligatorio.'); hayErrores = true; }
+      if (!/^\d{6,}$/.test(cedula)) { mostrarErrorCampo('cedula', 'Debe ser numérica y tener mínimo 6 dígitos.'); hayErrores = true; }
+      if (!fechaExp) { mostrarErrorCampo('fechaExpedicionCedula', 'Selecciona la fecha de expedición.'); hayErrores = true; }
+      if (!lugarNac || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(lugarNac)) { mostrarErrorCampo('lugarNacimiento', 'Solo se permite texto y caracteres válidos.'); hayErrores = true; }
+      if (!paisNac || !/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/.test(paisNac)) { mostrarErrorCampo('paisNacimiento', 'Solo se permite texto y caracteres válidos.'); hayErrores = true; }
+      if (nit && !/^[\d\-]+$/.test(nit)) { mostrarErrorCampo('nit', 'Formato de NIT inválido.'); hayErrores = true; }
+      if (!/^\d{8,}$/.test(celular)) { mostrarErrorCampo('celular', 'Debe ser numérico y tener mínimo 8 dígitos.'); hayErrores = true; }
+      if (!direccion) { mostrarErrorCampo('direccion', 'Este campo es obligatorio.'); hayErrores = true; }
+
+      if (!autorizacion) {
+        const errAuth = $('err-autorizacion');
+        errAuth.innerText = 'Debes aceptar los términos y condiciones para continuar.';
+        errAuth.classList.remove('hidden');
+        hayErrores = true;
+      }
+
+      return hayErrores;
+    }
+
+    function mostrarErrorCampo(idCampo, mensaje) {
+      const input = $(idCampo);
+      const err = $('err-' + idCampo);
+      if (input) input.classList.add('border-red-500');
+      if (err) { err.innerText = mensaje; err.classList.remove('hidden'); }
+    }
+
+    function obtenerRequisitosRequeridos(calidad, nacionalidad, tipoPersona) {
+      if (calidad === '2') {
+        return nacionalidad === '2'
+          ? (tipoPersona === '1' ? ['prov_creacion', 'prov_rut', 'prov_cedula', 'prov_certBancaria', 'prov_listas'] : ['prov_creacion', 'prov_rut', 'prov_camara', 'prov_repLegal', 'prov_certBancaria', 'prov_listas'])
+          : ['prov_creacion', 'prov_regFiscal', 'prov_declaracion', 'prov_listas'];
+      } else {
+        return nacionalidad === '2'
+          ? (tipoPersona === '1' ? ['cli_solicitud', 'cli_rut', 'cli_cedula', 'cli_tratamiento'] : ['cli_solicitud', 'cli_rut', 'cli_carta', 'cli_tratamiento'])
+          : ['cli_solicitud', 'cli_regFiscal'];
+      }
+    }
+
+    function escaparHtml(texto) {
+      const div = document.createElement('div');
+      div.innerText = texto ?? '';
+      return div.innerHTML;
+    }
+
+    // Apariencia de cada tarjeta de documento según su estado actual.
+    // Mismo fondo/borde neutro para todas las tarjetas (como las vacías/pendientes): el estado
+    // se distingue por el ícono y el color del texto, no por teñir todo el contenedor.
+    const BORDE_TARJETA_NEUTRO = 'border-gray-200 bg-gray-50';
+    const ESTILO_TARJETA_DOC = {
+      pendiente: { icono: 'fa-regular fa-clock text-gray-400', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-[#232429]' },
+      cargando: { icono: 'fa-solid fa-spinner fa-spin text-amber-500', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-[#232429]' },
+      aprobado: { icono: 'fa-solid fa-circle-check text-emerald-600', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-emerald-700' },
+      simulado: { icono: 'fa-solid fa-circle-check text-gray-400', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-gray-600' },
+      rechazado: { icono: 'fa-solid fa-circle-xmark text-red-500', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-red-700' },
+      advertencia: { icono: 'fa-solid fa-triangle-exclamation text-amber-500', borde: BORDE_TARJETA_NEUTRO, titulo: 'text-amber-700' }
+    };
+
+    function estadoVisualDocumento(docKey) {
+      if (docKeyEnProceso === docKey) return 'cargando';
+      const info = estadoDocumentos[docKey];
+      if (!info || info.status !== 'loaded') return 'vacio';
+      const resultado = resultadosPorDocumento[docKey];
+      if (!resultado) return 'pendiente';
+      return resultado.estado; // aprobado | rechazado | simulado | advertencia
+    }
+
+    function tarjetaDocumentoHtml(docKey) {
+      const info = catalogoDocs[docKey];
+      const estado = estadoVisualDocumento(docKey);
+      const doc = estadoDocumentos[docKey];
+      const resultado = resultadosPorDocumento[docKey];
+
+      if (estado === 'vacio') {
+        return `
+          <div class="border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs border-gray-200 bg-gray-50" id="card-${docKey}">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-xs text-[#232429]">${info.titulo}</span>
+                <span class="bg-orange-100 text-orange-800 text-[10px] px-2 py-0.5 rounded-full font-medium">Obligatorio</span>
+              </div>
+              <p class="text-[11px] text-gray-500">${info.desc}</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <label class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors cursor-pointer shadow-xs inline-flex items-center gap-1.5">
+                <i class="fa-solid fa-cloud-arrow-up text-[#FD7519]"></i> Adjuntar PDF
+                <input type="file" accept="application/pdf" class="hidden" onchange="cargarDocumento('${docKey}', this)">
+              </label>
+            </div>
+          </div>
+        `;
+      }
+
+      const estilo = ESTILO_TARJETA_DOC[estado] || ESTILO_TARJETA_DOC.pendiente;
+      const bloqueado = estado === 'aprobado' || estado === 'simulado' || estado === 'cargando';
+      const claseBordeCambiar = bloqueado ? 'border-gray-300 text-gray-400' : 'border-red-300 text-red-600';
+      const detalle = (estado === 'rechazado' || estado === 'advertencia') && resultado?.detalle
+        ? `<p class="text-[11px] ${estado === 'rechazado' ? 'text-red-600' : 'text-amber-700'} mt-1.5 flex items-start gap-1">
+             <i class="fa-solid fa-triangle-exclamation mt-0.5"></i> ${escaparHtml(resultado.detalle)}
+           </p>`
+        : '';
+
+      return `
+        <div class="border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs transition-colors ${estilo.borde}" id="card-${docKey}">
+          <div class="flex items-start gap-3">
+            <i class="${estilo.icono} text-base mt-0.5 shrink-0"></i>
+            <div>
+              <span class="font-semibold text-xs ${estilo.titulo}">${info.titulo}</span>
+              <p class="text-[11px] text-gray-500 mt-0.5">Archivo: <span class="font-medium text-gray-700">${escaparHtml(doc.fileName)}</span></p>
+              ${detalle}
+            </div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <button onclick="verDocumento('${docKey}')" class="px-3 py-2 bg-white border border-gray-300 text-gray-700 text-xs font-semibold rounded-xl hover:bg-gray-100 transition-colors cursor-pointer inline-flex items-center gap-1">
+              <i class="fa-solid fa-eye text-[#1EC038]"></i> Ver PDF
+            </button>
+            <button onclick="reiniciarDocumento('${docKey}')" ${bloqueado ? 'disabled' : ''} ${estado === 'aprobado' || estado === 'simulado' ? 'title="Documento aprobado: no se puede reemplazar"' : ''} class="px-3 py-2 bg-white border ${claseBordeCambiar} text-xs font-semibold rounded-xl hover:bg-red-50 transition-colors cursor-pointer disabled:cursor-not-allowed disabled:hover:bg-white">
+              Cambiar
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderizarListaDocumentos() {
+      $('contenedor-documentos').innerHTML = documentosActuales.map(tarjetaDocumentoHtml).join('');
+    }
+
+    function renderizarPanelDocumentos() {
+      estadoDocumentos = {};
+      resultadosPorDocumento = {};
+      docKeyEnProceso = null;
+      hayDocumentosModificados = false;
+
+      documentosActuales.forEach((docKey) => {
+        estadoDocumentos[docKey] = { status: 'empty', fileUrl: null, fileName: '' };
+      });
+
+      renderizarListaDocumentos();
+      actualizarBotonValidar();
+    }
+
+    function cargarDocumento(docKey, input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        estadoDocumentos[docKey] = { status: 'loaded', file, fileUrl: URL.createObjectURL(file), fileName: file.name };
+        delete resultadosPorDocumento[docKey];
+        hayDocumentosModificados = true;
+
+        renderizarListaDocumentos();
+        actualizarBotonValidar();
+      }
+    }
+
+    function verDocumento(docKey) {
+      if (estadoDocumentos[docKey]?.fileUrl) {
+        const docInfo = catalogoDocs[docKey];
+        $('titulo-visor-pdf').innerText = docInfo ? docInfo.titulo : 'Visualización de documento';
+        $('iframe-pdf').src = estadoDocumentos[docKey].fileUrl;
+        $('modal-visor-pdf').classList.remove('hidden');
+      }
+    }
+
+    function cerrarVisorPDF() {
+      $('modal-visor-pdf').classList.add('hidden');
+      $('iframe-pdf').src = '';
+    }
+
+    function reiniciarDocumento(docKey) {
+      estadoDocumentos[docKey] = { status: 'empty', fileUrl: null, fileName: '' };
+      delete resultadosPorDocumento[docKey];
+      hayDocumentosModificados = true;
+
+      renderizarListaDocumentos();
+      actualizarBotonValidar();
+    }
+
+    function actualizarBadgePaso2(aprobado) {
+      const badge = $('badge-paso-2');
+      if (!badge) return;
+      if (aprobado) {
+        badge.classList.remove('bg-[#012820]');
+        badge.classList.add('bg-emerald-600');
+        badge.innerHTML = '<i class="fa-solid fa-check text-[10px]"></i>';
+      } else {
+        badge.classList.remove('bg-emerald-600');
+        badge.classList.add('bg-[#012820]');
+        badge.innerText = '2';
+      }
+    }
+
+    function actualizarBotonValidar() {
+      const btn = $('btn-continuar');
+      const btnFinalizar = $('btn-finalizar-registro');
+      if (!btn) return;
+
+      const todosCargados = documentosActuales.length > 0
+        && documentosActuales.every((k) => estadoDocumentos[k]?.status === 'loaded');
+      const hayError = documentosActuales.some((k) => resultadosPorDocumento[k] && !resultadosPorDocumento[k].valid);
+      const todosAprobados = todosCargados
+        && documentosActuales.every((k) => resultadosPorDocumento[k]?.valid === true);
+
+      actualizarBadgePaso2(todosAprobados);
+      btn.classList.remove('btn-green-inst', 'btn-orange-inst');
+
+      if (procesandoValidacion) {
+        btn.classList.remove('hidden');
+        btnFinalizar?.classList.add('hidden');
+        btn.disabled = true;
+        btn.classList.add('btn-green-inst');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando...';
+        return;
+      }
+
+      if (todosAprobados) {
+        // La acción de continuar se mueve fuera del contenedor: "Finalizar registro".
+        btn.classList.add('hidden');
+        btnFinalizar?.classList.remove('hidden');
+        return;
+      }
+
+      btn.classList.remove('hidden');
+      btnFinalizar?.classList.add('hidden');
+
+      if (hayError) {
+        btn.classList.add('btn-orange-inst');
+        btn.disabled = !(todosCargados && hayDocumentosModificados);
+        btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Revalidar documentos';
+        return;
+      }
+
+      btn.classList.add('btn-green-inst');
+      btn.disabled = !todosCargados;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Validar documentos';
+    }
+
+    $('btn-ejecutar')?.addEventListener('click', () => {
+      const hayErrores = validarFormularioTitular();
+      if (hayErrores) return;
+
+      $('form-titular').classList.add('hidden');
+      $('badge-paso-1').classList.remove('bg-[#012820]');
+      $('badge-paso-1').classList.add('bg-emerald-600');
+      $('badge-paso-1').innerHTML = '<i class="fa-solid fa-check text-[10px]"></i>';
+      $('btn-editar').classList.remove('hidden');
+
+      const calidadSel = $('calidad');
+      const nacionalidadSel = $('nacionalidad');
+      const tipoPersonaSel = $('tipoPersona');
+
+      const calidadTxt = calidadSel.options[calidadSel.selectedIndex].text;
+      const nacionalidadTxt = nacionalidadSel.options[nacionalidadSel.selectedIndex].text;
+      const tipoPersonaTxt = tipoPersonaSel.options[tipoPersonaSel.selectedIndex].text;
+
+      $('res-perfil').innerText = `${calidadTxt} / ${nacionalidadTxt} / ${tipoPersonaTxt}`;
+      $('res-nombre').innerText = $('nombre').value;
+      $('res-correo').innerText = $('correoInstitucional').value;
+      $('resumen-titular').classList.remove('hidden');
+
+      const calidad = $('calidad').value;
+      const nacionalidad = $('nacionalidad').value;
+      const tipoPersona = $('tipoPersona').value;
+
+      documentosActuales = obtenerRequisitosRequeridos(calidad, nacionalidad, tipoPersona);
+      renderizarPanelDocumentos();
+
+      $('seccion-documentos').classList.remove('hidden');
+      $('seccion-volver').classList.remove('hidden');
+      $('subtitulo-etapa').innerText = 'Adjunta los documentos requeridos según tu selección.';
+
+      window.scrollTo({ top: $('seccion-documentos').offsetTop - 80, behavior: 'smooth' });
+    });
+
+    $('btn-editar')?.addEventListener('click', () => {
+      $('form-titular').classList.remove('hidden');
+      $('badge-paso-1').classList.add('bg-[#012820]');
+      $('badge-paso-1').classList.remove('bg-emerald-600');
+      $('badge-paso-1').innerText = '1';
+      $('btn-editar').classList.add('hidden');
+      $('resumen-titular').classList.add('hidden');
+      $('seccion-documentos').classList.add('hidden');
+      $('seccion-volver').classList.add('hidden');
+      $('subtitulo-etapa').innerText = 'Por favor completa la siguiente información para continuar.';
+    });
+
+    $('btn-volver')?.addEventListener('click', () => {
+      $('seccion-documentos').classList.add('hidden');
+      $('seccion-volver').classList.add('hidden');
+      $('form-titular').classList.remove('hidden');
+      $('badge-paso-1').classList.add('bg-[#012820]');
+      $('badge-paso-1').classList.remove('bg-emerald-600');
+      $('badge-paso-1').innerText = '1';
+      $('btn-editar').classList.add('hidden');
+      $('resumen-titular').classList.add('hidden');
+    });
+
+    function esperar(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function validarDocumentoReal(docKey, expectedType) {
+      const archivo = estadoDocumentos[docKey]?.file;
+      if (!archivo) {
+        return { estado: 'advertencia', detalle: 'No se pudo leer el archivo cargado.', valid: false };
+      }
+
+      const formData = new FormData();
+      formData.append('file', archivo);
+      formData.append('expectedDocumentType', expectedType);
+      if (expectedType === 'CEDULA') {
+        formData.append('numeroDocumento', $('cedula').value.trim());
+        formData.append('nombreCompleto', $('nombre').value.trim());
+      } else if (expectedType === 'RUT') {
+        formData.append('applicantType', $('tipoPersona').value === '2' ? 'JURIDICA' : 'NATURAL');
+      }
+
+      let respuesta;
+      try {
+        respuesta = await fetch(`${API_BASE_URL}/v1/document-validations`, { method: 'POST', body: formData });
+      } catch (error) {
+        return { estado: 'advertencia', detalle: 'No se pudo contactar el servicio de validación de documentos.', valid: false };
+      }
+
+      const cuerpo = await respuesta.json().catch(() => null);
+
+      if (!respuesta.ok) {
+        return { estado: 'advertencia', detalle: cuerpo?.message || 'El servicio de validación respondió con un error.', valid: false };
+      }
+
+      if (!cuerpo.documentType.match) {
+        const tipoEsperadoTxt = expectedType === 'CEDULA' ? 'una cédula' : 'un RUT';
+        return { estado: 'rechazado', detalle: `El documento cargado no corresponde a ${tipoEsperadoTxt}.`, valid: false };
+      }
+
+      const camposInvalidos = (cuerpo.fields || []).filter((campo) => !campo.match);
+      if (camposInvalidos.length > 0) {
+        const detalle = camposInvalidos
+          .map((campo) => `${campo.field}: formulario "${campo.formValue ?? '-'}" vs. documento "${campo.documentValue ?? '-'}"`)
+          .join(' · ');
+        return { estado: 'rechazado', detalle, valid: false };
+      }
+
+      return { estado: 'aprobado', detalle: 'Tipo de documento y datos verificados correctamente.', valid: true };
+    }
+
+    async function validarUnDocumento(docKey) {
+      const expectedType = tipoDocumentoConModelo[docKey];
+
+      // Sin backend (CALL_BACKEND=false) o sin modelo real para este tipo todavía: se aprueba
+      // directo, sin llamar a la API, dentro de la misma cascada al dar "Validar documentos".
+      if (!CALL_BACKEND || !expectedType) {
+        await esperar(800);
+        return { estado: 'aprobado', detalle: 'Documento recibido correctamente.', valid: true };
+      }
+      return validarDocumentoReal(docKey, expectedType);
+    }
+
+    // Validación en cascada: recorre los documentos en orden, salta los que ya están aprobados
+    // y se detiene en el primer rechazo (no sigue intentando con los siguientes).
+    async function ejecutarValidacionDocumentos() {
+      hayDocumentosModificados = false;
+      procesandoValidacion = true;
+      actualizarBotonValidar();
+      $('subtitulo-etapa').innerText = 'Validando documentos...';
+
+      for (const docKey of documentosActuales) {
+        if (resultadosPorDocumento[docKey]?.valid) continue;
+
+        docKeyEnProceso = docKey;
+        renderizarListaDocumentos();
+
+        const resultado = await validarUnDocumento(docKey);
+        resultadosPorDocumento[docKey] = resultado;
+        docKeyEnProceso = null;
+        renderizarListaDocumentos();
+
+        if (!resultado.valid) break; // cascada: se detiene en el primer documento rechazado
+      }
+
+      procesandoValidacion = false;
+
+      const todosAprobados = documentosActuales.every((k) => resultadosPorDocumento[k]?.valid === true);
+      $('subtitulo-etapa').innerText = todosAprobados
+        ? 'Documentos validados correctamente.'
+        : 'Reemplaza el documento marcado en rojo y vuelve a validar.';
+
+      actualizarBotonValidar();
+    }
+
+    $('btn-continuar')?.addEventListener('click', async () => {
+      await ejecutarValidacionDocumentos();
+    });
+
+    $('btn-finalizar-registro')?.addEventListener('click', () => {
+      $('modal-confirmar-finalizar').classList.remove('hidden');
+    });
+
+    $('btn-cancelar-finalizar')?.addEventListener('click', () => {
+      $('modal-confirmar-finalizar').classList.add('hidden');
+    });
+
+    $('btn-confirmar-finalizar')?.addEventListener('click', () => {
+      $('modal-confirmar-finalizar').classList.add('hidden');
+
+      // Al finalizar, solo debe quedar visible la confirmación: se oculta todo lo demás
+      // (título, información del solicitante, documentos y sus acciones).
+      $('bloque-titulo').classList.add('hidden');
+      $('seccion-info-solicitante').classList.add('hidden');
+      $('seccion-documentos').classList.add('hidden');
+      $('seccion-volver').classList.add('hidden');
+      $('seccion-etapa4').classList.remove('hidden');
+    });
+
+    $('btn-finalizar-reiniciar')?.addEventListener('click', () => {
+      window.location.reload();
+    });
+  </script>
+</body>
+
+</html>
