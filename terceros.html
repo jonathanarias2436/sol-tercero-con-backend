@@ -1065,7 +1065,85 @@
       $('seccion-documentos').classList.add('hidden');
       $('seccion-volver').classList.add('hidden');
       $('seccion-etapa4').classList.remove('hidden');
+
+      finalizarRegistroTercero();
     });
+
+    // Finaliza el registro: sube los documentos ya validados, guarda el registro completo y
+    // dispara el correo de confirmación (todo en un solo paso, en el backend). Se dispara una
+    // sola vez, al confirmar "Finalizar registro", y nunca bloquea la UI: si falla, solo queda
+    // en la consola.
+    // Quita tildes, pasa a minúsculas, descarta signos de puntuación y filtra palabras de
+    // relleno ("de", "la", "el"...) para que el título del documento quede como un slug limpio:
+    // "Formato único de creación de proveedores" -> "formato_unico_creacion_proveedores".
+    function sluggificarTitulo(texto) {
+      const PALABRAS_VACIAS = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'para', 'con', 'por', 'un', 'una', 'al']);
+      return texto
+        .toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .filter((palabra) => palabra && !PALABRAS_VACIAS.has(palabra))
+        .join('_');
+    }
+
+    function fechaDDMMYYYY(fecha) {
+      const dd = String(fecha.getDate()).padStart(2, '0');
+      const mm = String(fecha.getMonth() + 1).padStart(2, '0');
+      return `${dd}${mm}${fecha.getFullYear()}`;
+    }
+
+    // Nombre final, ej.: formato_unico_creacion_proveedores_1234567890_30102026.pdf
+    // Se usa la cédula (o el NIT si es persona jurídica) en vez del id del registro, porque ese
+    // id todavía no existe en este momento: lo genera el backend al guardar el registro completo.
+    function nombrarArchivoDocumento(docKey, archivo, numeroIdentificacion) {
+      const titulo = catalogoDocs[docKey]?.titulo || docKey;
+      const extension = (archivo.name.split('.').pop() || 'pdf').toLowerCase();
+      const identificacion = numeroIdentificacion || 'sin-identificacion';
+      return `${sluggificarTitulo(titulo)}_${identificacion}_${fechaDDMMYYYY(new Date())}.${extension}`;
+    }
+
+    function finalizarRegistroTercero() {
+      if (!CALL_BACKEND) return;
+
+      const calidadTexto = { '1': 'Cliente', '2': 'Proveedor' }[$('calidad')?.value] || '';
+      const nacionalidadTexto = { '1': 'Extranjero', '2': 'Nacional' }[$('nacionalidad')?.value] || '';
+      const tipoPersonaTexto = { '1': 'Natural', '2': 'Juridica' }[$('tipoPersona')?.value] || '';
+
+      const cedulaValor = $('cedula')?.value?.trim() || '';
+      const nitValor = $('nit')?.value?.trim() || '';
+      const numeroIdentificacion = (tipoPersonaTexto === 'Juridica' && nitValor) ? nitValor : cedulaValor;
+
+      const formData = new FormData();
+      formData.append('calidad', calidadTexto);
+      formData.append('nacionalidad', nacionalidadTexto);
+      formData.append('tipoPersona', tipoPersonaTexto);
+      formData.append('correo', $('correoInstitucional')?.value?.trim() || '');
+      formData.append('nombre', $('nombre')?.value?.trim() || '');
+      formData.append('cedula', cedulaValor);
+      formData.append('fechaExpedicionCedula', $('fechaExpedicionCedula')?.value || '');
+      formData.append('lugarNacimiento', $('lugarNacimiento')?.value?.trim() || '');
+      formData.append('paisNacimiento', $('paisNacimiento')?.value?.trim() || '');
+      formData.append('nit', nitValor);
+      formData.append('celular', $('celular')?.value?.trim() || '');
+      formData.append('direccion', $('direccion')?.value?.trim() || '');
+
+      // Cada documento sube bajo su propia clave interna (prov_cedula, cli_rut, etc.) — el
+      // backend no asume cuáles ni cuántos son, los toma todos. Se renombra el archivo a algo
+      // legible y ordenado antes de enviarlo (en vez del nombre que le puso el usuario).
+      documentosActuales.forEach((docKey) => {
+        const archivo = estadoDocumentos[docKey]?.file;
+        if (archivo) {
+          const nombreOrdenado = nombrarArchivoDocumento(docKey, archivo, numeroIdentificacion);
+          formData.append(docKey, archivo, nombreOrdenado);
+        }
+      });
+
+      fetch(`${API_BASE_URL}/v1/tercero-registrations`, {
+        method: 'POST',
+        body: formData
+      }).catch(error => console.error('No se pudo finalizar el registro:', error));
+    }
 
     $('btn-finalizar-reiniciar')?.addEventListener('click', () => {
       window.location.reload();
